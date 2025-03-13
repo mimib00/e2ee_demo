@@ -91,7 +91,11 @@ pub async fn decrypt_requests(request: Request<Body>, next: Next) -> Result<Resp
 
 async fn generate_request() -> String {
     let public_key = load_public_key();
-    let encrypted_data = encrypt("Hello World", &public_key);
+    let msg = Message {
+        msg: "Hello World".to_string(),
+    };
+
+    let encrypted_data = encrypt(serde_json::to_string(&msg).unwrap().as_str(), &public_key);
     encrypted_data
 }
 
